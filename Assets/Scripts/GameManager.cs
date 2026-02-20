@@ -135,6 +135,8 @@ public class GameManager : MonoBehaviour
         if (isGameOver) return;
         isGameOver = true;
         Debug.Log("LEVEL COMPLETED - WIN");
+        NextLevel nextLevelButton = FindObjectOfType<NextLevel>(true);
+        if (nextLevelButton != null) nextLevelButton.ShowNextLevel();
         if (winPanel != null) winPanel.SetActive(true);
         Time.timeScale = 0f;
     }
