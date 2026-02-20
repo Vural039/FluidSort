@@ -15,7 +15,11 @@ public bool startEmpty = false;
     {
         for (int i = 0; i < liquidTransforms.Length; i++)
         {
-            data.AddLiquid(LiquidGenerator.GetRandomLiquid());
+            string liquid = LiquidGenerator.GetNextLiquid();
+            if (!string.IsNullOrEmpty(liquid))
+                data.AddLiquid(liquid);
+            else
+                break; // pool exhausted — leave remaining slots empty
         }
     }
 

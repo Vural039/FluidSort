@@ -1,11 +1,19 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    [Header("UI (optional)")]
+    public GameObject winPanel;
+    public GameObject losePanel;
+
     private BottleView selectedBottle;
     private BottleView[] allBottles;
+
+    private bool isGameOver = false;
 
     void Awake()
     {
@@ -15,6 +23,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         allBottles = FindObjectsOfType<BottleView>();
+        if (winPanel != null) winPanel.SetActive(false);
+        if (losePanel != null) losePanel.SetActive(false);
     }
 
     void Update()
@@ -24,6 +34,8 @@ public class GameManager : MonoBehaviour
 
     void HandleInput()
     {
+        if (isGameOver) return;
+
         Vector2 worldPoint;
 
         // Editör (Mouse)
@@ -78,6 +90,7 @@ public class GameManager : MonoBehaviour
             selectedBottle = null;
 
             CheckWinCondition();
+            CheckLoseCondition();
         }
     }
 
@@ -88,7 +101,65 @@ public class GameManager : MonoBehaviour
             if (!bottle.IsComplete())
                 return;
         }
+        Win();
+    }
 
-        Debug.Log("LEVEL COMPLETED");
+    void CheckLoseCondition()
+    {
+        // If any valid pour exists, game is not lost
+        for (int i = 0; i < allBottles.Length; i++)
+        {
+            for (int j = 0; j < allBottles.Length; j++)
+            {
+                if (i == j) continue;
+
+                var a = allBottles[i];
+                var b = allBottles[j];
+
+                if (a == null || b == null) continue;
+
+                var aData = a.GetBottleData();
+                var bData = b.GetBottleData();
+
+                if (aData.CanPourInto(bData))
+                    return; // move exists
+            }
+        }
+
+        // No moves and not all complete => lose
+        Lose();
+    }
+
+    void Win()
+    {
+        if (isGameOver) return;
+        isGameOver = true;
+        Debug.Log("LEVEL COMPLETED - WIN");
+        if (winPanel != null) winPanel.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    void Lose()
+    {
+        if (isGameOver) return;
+        isGameOver = true;
+        Debug.Log("NO MOVES LEFT - LOSE");
+        if (losePanel != null) losePanel.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    // UI buttons can call these
+    public void RestartLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void LoadNextLevel()
+    {
+        Time.timeScale = 1f;
+        int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (nextIndex < SceneManager.sceneCountInBuildSettings)
+            SceneManager.LoadScene(nextIndex);
     }
 }
