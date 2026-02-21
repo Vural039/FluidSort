@@ -17,6 +17,13 @@ public class NextLevel : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    public void RestartLevel()
+    {
+        LiquidGenerator.ResetPool();
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+    }
+
     // public void LoadNextLevel()
     // {
     //     Scene currentScene = SceneManager.GetActiveScene();

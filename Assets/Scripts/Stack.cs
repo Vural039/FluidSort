@@ -94,7 +94,11 @@ public class Stack
         }
         return newStack;
     }
-    
 
-    
+    public string GetAtIndex(int index)
+    {
+        if (index >= 0 && index < stack.Length)
+            return stack[index];
+        return null;
+    }
 }

@@ -41,16 +41,23 @@ public class GameManager : MonoBehaviour
         // Editör (Mouse)
         if (Input.GetMouseButtonDown(0))
         {
-            worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            worldPoint = GetWorldPointFromScreenPoint(Input.mousePosition);
             TrySelectBottle(worldPoint);
         }
 
         // Android (Touch)
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            worldPoint = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+            worldPoint = GetWorldPointFromScreenPoint(Input.GetTouch(0).position);
             TrySelectBottle(worldPoint);
         }
+    }
+
+    Vector2 GetWorldPointFromScreenPoint(Vector2 screenPoint)
+    {
+        Vector3 screenPoint3D = new Vector3(screenPoint.x, screenPoint.y, 10f);
+        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(screenPoint3D);
+        return new Vector2(worldPoint.x, worldPoint.y);
     }
 
     void TrySelectBottle(Vector2 worldPoint)

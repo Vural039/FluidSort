@@ -75,4 +75,10 @@ public static class LiquidGenerator
         int index = Random.Range(0, liquids.Length);
         return liquids[index];
     }
+
+    public static void ResetPool()
+    {
+        pool = null;
+        poolIndex = 0;
+    }
 }

@@ -30,18 +30,22 @@ public bool startEmpty = false;
     public void UpdateVisuals()
     {
         Stack tempStack = data.GetClonedStack();
+        int count = tempStack.Count();
 
+        // Render from bottom to top (index 0 at bottom, higher indices at top)
         for (int i = 0; i < liquidTransforms.Length; i++)
         {
-            if (tempStack.Count() > 0)
+            // Only fill from bottom up based on count
+            if (i < count)
             {
-                string liquid = tempStack.Pop();
+                string liquid = tempStack.GetAtIndex(i);
                 liquidTransforms[i]
                     .GetComponent<Renderer>()
                     .material.color = GetColorFromLiquid(liquid);
             }
             else
             {
+                // Top parts invisible when not filled
                 liquidTransforms[i]
                     .GetComponent<Renderer>()
                     .material.color = Color.clear;
