@@ -1,5 +1,5 @@
 using System;
-
+using UnityEngine;
 public class BottleData
 {
     private Stack liquids = new Stack();
@@ -57,8 +57,12 @@ public class BottleData
         if (!CanPourInto(otherBottle))
             return;
 
-        string liquid = liquids.Pop();
-        otherBottle.AddLiquid(liquid);
+        while (!IsEmpty() && !otherBottle.IsFull() && (otherBottle.IsEmpty() || otherBottle.Peek() == Peek()))
+        {
+            string liquid = liquids.Pop();
+            otherBottle.AddLiquid(liquid);
+            Debug.Log("poured " + liquid);
+        }
     }
 
     // Görsel için güvenli kopya

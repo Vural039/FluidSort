@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
     private BottleView[] allBottles;
 
     private bool isGameOver = false;
+    
+    // Debounce for preventing double tap detection
+    private int lastProcessedTouchId = -1;
 
     void Awake()
     {
@@ -45,12 +48,7 @@ public class GameManager : MonoBehaviour
             TrySelectBottle(worldPoint);
         }
 
-        // Android (Touch)
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            worldPoint = GetWorldPointFromScreenPoint(Input.GetTouch(0).position);
-            TrySelectBottle(worldPoint);
-        }
+        
     }
 
     Vector2 GetWorldPointFromScreenPoint(Vector2 screenPoint)
