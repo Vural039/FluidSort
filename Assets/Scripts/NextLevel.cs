@@ -12,13 +12,12 @@ public class NextLevel : MonoBehaviour
 
     public void ShowNextLevel()
     {
-        LevelCounter levelCounter = FindObjectOfType<LevelCounter>();
-        if (levelCounter != null) levelCounter.IncreaseLevel();
         gameObject.SetActive(true);
     }
 
     public void RestartLevel()
     {
+        LevelManager.Instance.CompleteLevel();
         LiquidGenerator.ResetPool();
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);

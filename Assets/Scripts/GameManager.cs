@@ -144,6 +144,7 @@ public class GameManager : MonoBehaviour
         if (nextLevelButton != null) nextLevelButton.ShowNextLevel();
         if (winPanel != null) winPanel.SetActive(true);
         Time.timeScale = 0f;
+        
     }
 
     void Lose()
