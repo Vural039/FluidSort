@@ -15,3 +15,5 @@ Drag and pour liquids between bottles to match colors in the correct order. Comp
 - Unity, C#
 - Stack data structure
 - OOP principles
+
+This project is inspired by the real game: Magic Sort
